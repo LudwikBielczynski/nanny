@@ -1,0 +1,4 @@
+picamera
+RPI.GPIO
+flask
+opencv-python
