@@ -19,44 +19,48 @@ class Camera:
             while self.frame is None:
                 time.sleep(0)
 
-    def apply_settings(self, camera):
-        camera.resolution(self.camera.MAX_RESOLUTION)
-        camera.hflip = True
-        camera.vflip = True
-
-        return camera
 
     def get_frame(self):
         Camera.last_access = time.time()
         self.initialize()
         return self.frame
 
+    @staticmethod
+    def _apply_settings(camera):
+        camera.resolution = camera.MAX_RESOLUTION
+        camera.hflip = True
+        camera.vflip = True
+
+        return camera
+
+    @staticmethod
+    def _warm_up(camera) -> None:
+        camera.start_preview()
+        time.sleep(2)
+
+    @classmethod
+    def _stream(cls, camera):
+        stream = io.BytesIO()
+        for _ in camera.capture_continuous(stream, 'jpeg',
+                                            use_video_port=True):
+            # store frame
+            stream.seek(0)
+            cls.frame = stream.read()
+
+            # reset stream for next frame
+            stream.seek(0)
+            stream.truncate()
+
+            # if there hasn't been any clients asking for frames in
+            # the last 10 seconds stop the thread
+            if time.time() - cls.last_access > 10:
+                break
+
     @classmethod
     def _thread(cls):
         with PiCamera() as camera:
-            # camera setup
-            camera.resolution(camera.MAX_RESOLUTION)
-            camera.hflip = True
-            camera.vflip = True
-
-            # let camera warm up
-            camera.start_preview()
-            time.sleep(2)
-
-            stream = io.BytesIO()
-            for _ in camera.capture_continuous(stream, 'jpeg',
-                                               use_video_port=True):
-                # store frame
-                stream.seek(0)
-                cls.frame = stream.read()
-
-                # reset stream for next frame
-                stream.seek(0)
-                stream.truncate()
-
-                # if there hasn't been any clients asking for frames in
-                # the last 10 seconds stop the thread
-                if time.time() - cls.last_access > 10:
-                    break
+            camera = cls._apply_settings(camera)
+            cls._warm_up(camera)
+            cls._stream(camera)
 
         cls.thread = None
