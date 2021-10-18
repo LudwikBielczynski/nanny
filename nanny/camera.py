@@ -13,19 +13,27 @@ class Camera:
     def __init__(self):
         self.thread = None
 
-    def initialize(self):
+    def get_frame(self) -> bytes:
+        Camera.frame_change_time = time.time()
+        self._initialize()
+        return self.frame
+
+    def _initialize(self):
         if self.thread is None:
-            self.thread = threading.Thread(target=self._thread)
+            self.thread = threading.Thread(target=self._run_thread)
             self.thread.start()
 
             # wait until frames start to be available
             while self.frame == b'':
                 time.sleep(0)
 
-    def get_frame(self) -> bytes:
-        Camera.frame_change_time = time.time()
-        self.initialize()
-        return self.frame
+    def _run_thread(self) -> None:
+        with PiCamera() as camera:
+            camera = self._apply_settings(camera)
+            self._warm_up(camera)
+            self._stream(camera)
+
+        self.thread = None
 
     @staticmethod
     def _apply_settings(camera: PiCamera) -> PiCamera:
@@ -43,6 +51,7 @@ class Camera:
     def _stream(self, camera: PiCamera) -> None:
         stream = io.BytesIO()
         while camera.capture_continuous(stream, 'jpeg',
+                                        resize=(768, 576),
                                         use_video_port=True):
             # store frame
             stream.seek(0)
@@ -55,11 +64,3 @@ class Camera:
             # Stop the thread if in the last 10 seconds no clients for frames
             if time.time() - Camera.frame_change_time > 10:
                 break
-
-    def _thread(self) -> None:
-        with PiCamera() as camera:
-            camera = self._apply_settings(camera)
-            self._warm_up(camera)
-            self._stream(camera)
-
-        self.thread = None
