@@ -17,7 +17,7 @@ def index():
 
 @app.route('/video')
 def video():
-    logger = Logger()
+    logger = Logger('werkzeug') # Use this logger to see output
     return Response(generate_frames(Camera(logger)),
                     mimetype='multipart/x-mixed-replace; boundary=frame'
                    )
