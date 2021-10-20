@@ -1,11 +1,14 @@
 import logging
 import sys
+from typing import Optional
 
 from nanny.singleton import SingletonMeta
 
 class Logger(metaclass=SingletonMeta):
 
-    def __init__(self, logger_name):
+    def __init__(self, logger_name: Optional[str] = None) -> None:
+        if logger_name is None:
+            logger_name = __name__
         self.logger = logging.getLogger(logger_name)
         logs_format = ('%(asctime)s.%(msecs).0f - %(levelname)s - PID:%(process)d ' \
                        '{%(name)s.%(funcName)s:%(lineno)d} %(message)s'
