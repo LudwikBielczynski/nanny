@@ -1,22 +1,30 @@
 import io
 import time
 import threading
-from typing import Optional
+from typing import TYPE_CHECKING
 
 from picamera import PiCamera
 
 from nanny.singleton import SingletonMeta
 
+if TYPE_CHECKING:
+    from nanny.logger import Logger
+
 class Camera(metaclass=SingletonMeta):
-    def __init__(self):
+
+    def __init__(self, logger: 'Logger'):
         self.frame = b''
         self.frame_change_time = 0.
         self.thread = None
+
+        self.logger = logger
 
     def get_frame(self) -> bytes:
         '''Keep only camera running when there are clients for frames'''
         self.frame_change_time = time.time()
         self._initialize()
+
+        self.logger.info('Fetched frame')
         return self.frame
 
     def _initialize(self):
@@ -25,12 +33,16 @@ class Camera(metaclass=SingletonMeta):
         by another thread.
         '''
         if self.thread is None:
+            self.logger.info('Initialized a new frame')
             self.thread = threading.Thread(target=self._run_thread)
             self.thread.start()
 
             # wait until frames start to be available
             while self.frame == b'':
                 time.sleep(0)
+
+        else:
+            self.logger.info('No frame was initialized as the thread was occupied')
 
     def _run_thread(self) -> None:
         '''
@@ -43,23 +55,27 @@ class Camera(metaclass=SingletonMeta):
             self._stream(camera)
 
         self.thread = None
+        self.logger.info('Thread is closing')
 
-    @staticmethod
-    def _apply_settings(camera: PiCamera) -> PiCamera:
+
+    def _apply_settings(self, camera: PiCamera) -> PiCamera:
         camera.resolution = camera.MAX_RESOLUTION
         camera.hflip = True
         camera.vflip = True
 
+        self.logger.info('Applied camera settings')
         return camera
 
-    @staticmethod
-    def _warm_up(camera: PiCamera) -> None:
+    def _warm_up(self, camera: PiCamera) -> None:
         '''A warm-up of the camera is needed for good quality.'''
         camera.start_preview()
         time.sleep(2)
 
+        self.logger.info('Finished camera warm-up')
+
     def _stream(self, camera: PiCamera) -> None:
         stream = io.BytesIO()
+        self.logger.info('Starting stream')
         while camera.capture_continuous(stream, 'jpeg',
                                         resize=(768, 576),
                                         use_video_port=True):
@@ -73,4 +89,5 @@ class Camera(metaclass=SingletonMeta):
 
             # Stop the thread if in the last 10 seconds no clients for frames
             if time.time() - self.frame_change_time > 10:
+                self.logger.warn('Closing stream as there are no clients')
                 break
