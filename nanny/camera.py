@@ -1,7 +1,7 @@
 import io
 import time
 import threading
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from picamera import PiCamera
 
@@ -13,13 +13,13 @@ if TYPE_CHECKING:
 class Camera(metaclass=SingletonMeta):
 
     def __init__(self, logger: 'Logger'):
-        self.frame = b''
+        self.frame = None # type: Optional[bytes]
         self.frame_change_time = 0.
-        self.thread = None
+        self.thread = None # type: Optional[threading.Thread]
 
         self.logger = logger
 
-    def get_frame(self) -> bytes:
+    def get_frame(self) -> Optional[bytes]:
         '''Keep only camera running when there are clients for frames'''
         self.frame_change_time = time.time()
         self._initialize()
@@ -27,7 +27,7 @@ class Camera(metaclass=SingletonMeta):
         self.logger.info('Fetched frame')
         return self.frame
 
-    def _initialize(self):
+    def _initialize(self) -> None:
         '''
         Initialize only when there is nothing running on the thread. Otherwise use frames generated
         by another thread.
@@ -38,7 +38,7 @@ class Camera(metaclass=SingletonMeta):
             self.thread.start()
 
             # wait until frames start to be available
-            while self.frame == b'':
+            while self.frame is None:
                 time.sleep(0)
 
         else:

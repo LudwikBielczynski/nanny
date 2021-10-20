@@ -26,7 +26,6 @@ class Logger(metaclass=SingletonMeta):
     def info(self, *args, **kwargs):
         return self.logger.info(*args, **kwargs)
 
-
     def debug(self, *args, **kwargs):
         return self.logger.debug(*args, **kwargs)
 
@@ -35,4 +34,3 @@ class Logger(metaclass=SingletonMeta):
 
     def error(self, *args, **kwargs):
         return self.logger.error(*args, **kwargs)
-

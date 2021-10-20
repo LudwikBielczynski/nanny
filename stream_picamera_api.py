@@ -4,7 +4,6 @@ from nanny.camera import Camera
 from nanny.logger import Logger
 
 app = Flask(__name__)
-logger = Logger()
 
 def generate_frames(camera):
     while True:
@@ -18,6 +17,7 @@ def index():
 
 @app.route('/video')
 def video():
+    logger = Logger()
     return Response(generate_frames(Camera(logger)),
                     mimetype='multipart/x-mixed-replace; boundary=frame'
                    )
