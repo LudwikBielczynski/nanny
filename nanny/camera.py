@@ -95,5 +95,3 @@ class Camera(metaclass=SingletonMeta):
             if time.time() - self.frame_change_time > 10:
                 self.logger.warn('Closing stream as there are no clients')
                 break
-
-        self.thread = None
