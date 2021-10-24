@@ -44,8 +44,8 @@ class Camera:
 
             stream = io.BytesIO()
             self.logger.info('Starting stream')
-            while camera.capture_continuous(stream, 'jpeg',
-                                            use_video_port=True):
+            for foo in camera.capture_continuous(stream, 'jpeg',
+                                                 use_video_port=True):
                 # store frame
                 stream.seek(0)
                 Camera.frame = stream.read()
