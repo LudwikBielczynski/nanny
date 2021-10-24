@@ -86,7 +86,7 @@ class Camera(metaclass=SingletonMeta):
             stream.seek(0)
             self.frame = stream.read()
 
-            self.logger.info('New frame')
+            self.logger.info('New frame read')
             # reset stream for next frame
             stream.seek(0)
             stream.truncate()
