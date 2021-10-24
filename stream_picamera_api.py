@@ -1,6 +1,6 @@
 from flask import Flask,render_template,Response
 
-from nanny.camera_alternative import Camera
+from nanny.camera import Camera
 from nanny.logger import Logger
 
 app = Flask(__name__)

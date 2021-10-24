@@ -77,11 +77,11 @@ class Camera(metaclass=SingletonMeta):
     def _stream(self, camera: PiCamera) -> None:
         stream = io.BytesIO()
         self.logger.info('Starting stream')
-        while camera.capture_continuous(stream,
-                                        format='jpeg',
-                                        resize=(768, 576),
-                                        use_video_port=True,
-                                       ):
+        for _ in camera.capture_continuous(stream,
+                                           format='jpeg',
+                                           resize=(768, 576),
+                                           use_video_port=True,
+                                          ):
             # store frame
             stream.seek(0)
             self.frame = stream.read()
