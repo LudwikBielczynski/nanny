@@ -24,7 +24,6 @@ class Camera(metaclass=SingletonMeta):
         self.frame_change_time = time.time()
         self._initialize()
 
-        self.logger.info('Fetched frame')
         return self.frame
 
     def _initialize(self) -> None:
@@ -33,7 +32,7 @@ class Camera(metaclass=SingletonMeta):
         by another thread.
         '''
         if self.thread is None:
-            self.logger.info('Initialized a new frame')
+            # self.logger.debug('Initialized a new frame')
             self.thread = threading.Thread(target=self._run_thread)
             self.thread.start()
 
@@ -41,8 +40,8 @@ class Camera(metaclass=SingletonMeta):
             while self.frame is None:
                 time.sleep(0)
 
-        else:
-            self.logger.info('Using old thread')
+        # else:
+        #     self.logger.debug('Using old thread')
 
     def _run_thread(self) -> None:
         '''
@@ -86,7 +85,6 @@ class Camera(metaclass=SingletonMeta):
             stream.seek(0)
             self.frame = stream.read()
 
-            self.logger.info('New frame read')
             # reset stream for next frame
             stream.seek(0)
             stream.truncate()
