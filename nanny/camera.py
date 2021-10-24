@@ -42,7 +42,7 @@ class Camera(metaclass=SingletonMeta):
                 time.sleep(0)
 
         else:
-            self.logger.info('No frame was initialized as the thread was occupied')
+            self.logger.info('Using old thread')
 
     def _run_thread(self) -> None:
         '''
@@ -59,7 +59,8 @@ class Camera(metaclass=SingletonMeta):
 
 
     def _apply_settings(self, camera: PiCamera) -> PiCamera:
-        camera.resolution = camera.MAX_RESOLUTION
+        if hasattr(camera, "MAX_RESOLUTION"):
+            camera.resolution = camera.MAX_RESOLUTION
         camera.hflip = True
         camera.vflip = True
 
@@ -76,13 +77,16 @@ class Camera(metaclass=SingletonMeta):
     def _stream(self, camera: PiCamera) -> None:
         stream = io.BytesIO()
         self.logger.info('Starting stream')
-        while camera.capture_continuous(stream, 'jpeg',
+        while camera.capture_continuous(stream,
+                                        format='jpeg',
                                         resize=(768, 576),
-                                        use_video_port=True):
+                                        use_video_port=True,
+                                       ):
             # store frame
             stream.seek(0)
             self.frame = stream.read()
 
+            self.logger.info('New frame')
             # reset stream for next frame
             stream.seek(0)
             stream.truncate()

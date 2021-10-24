@@ -5,7 +5,7 @@ from nanny.logger import Logger
 
 app = Flask(__name__)
 
-def generate_frames(camera):
+def frames_generator(camera):
     while True:
         frame = camera.get_frame()
         yield(b'--frame\r\n'
@@ -18,7 +18,7 @@ def index():
 @app.route('/video')
 def video():
     logger = Logger('werkzeug') # Use this logger to see output
-    return Response(generate_frames(Camera(logger)),
+    return Response(frames_generator(Camera(logger)),
                     mimetype='multipart/x-mixed-replace; boundary=frame'
                    )
 
