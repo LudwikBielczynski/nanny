@@ -1,0 +1,10 @@
+[Unit]
+Description=Camera service
+
+[Service]
+User=pi
+Group=pi
+ExecStart=/home/pi/.pyenv/shims/python stream_camera_api.py
+
+[Install]
+WantedBy=multi-user.target

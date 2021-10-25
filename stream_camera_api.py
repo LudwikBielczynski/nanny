@@ -1,19 +1,13 @@
 from flask import Flask,render_template,Response
-import cv2
+
+from nanny.camera import Camera
+from nanny.logger import Logger
 
 app = Flask(__name__)
-camera = cv2.VideoCapture(0)
 
-def generate_frames():
+def frames_generator(camera):
     while True:
-        ## read the camera frame
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-
+        frame = camera.get_frame()
         yield(b'--frame\r\n'
               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
@@ -23,9 +17,10 @@ def index():
 
 @app.route('/video')
 def video():
-    return Response(generate_frames(),
+    logger = Logger('werkzeug') # Use this logger to see output
+    return Response(frames_generator(Camera(logger)),
                     mimetype='multipart/x-mixed-replace; boundary=frame'
                    )
 
 if __name__=="__main__":
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=False, threaded=True)
