@@ -4,7 +4,7 @@ Description=Camera service
 [Service]
 User=pi
 Group=pi
-ExecStart=/home/pi/.pyenv/shims/python stream_camera_api.py
+ExecStart=/home/pi/.pyenv/versions/3.7.11/envs/nanny/bin/python stream_camera_api.py
 
 [Install]
 WantedBy=multi-user.target

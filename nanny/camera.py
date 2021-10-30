@@ -81,11 +81,11 @@ class Camera(metaclass=SingletonMeta):
                                            resize=(768, 576),
                                            use_video_port=True,
                                           ):
-            # store frame
+            # Store frame
             stream.seek(0)
             self.frame = stream.read()
 
-            # reset stream for next frame
+            # Reset stream for the next frame
             stream.seek(0)
             stream.truncate()
 

@@ -2,4 +2,5 @@ smbus2
 picamera
 RPI.GPIO
 flask
-opencv-python
+pyaudio
+wave
