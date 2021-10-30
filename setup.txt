@@ -75,6 +75,9 @@ eval "$(pyenv virtualenv-init -)"
 pyenv install 3.7.11
 pyenv virtualenv 3.7.11 nanny
 
+# Install dependencies for pyaudio
+sudo apt install python-all-dev portaudio19-dev
+
 git clone https://github.com/LudwikBielczynski/nanny.git
 cd nanny
 pyenv activate nanny
