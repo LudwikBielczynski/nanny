@@ -39,7 +39,7 @@ class Microphone:
         return device_info
 
     def stream(self):
-        self.logger.info(FORMAT, CHANNELS, self._rate, self.device_info["index"], CHUNK)
+        print(FORMAT, CHANNELS, self._rate, self.device_info["index"], CHUNK)
         stream = self.pyaudio.open(format=FORMAT,
                                    channels=CHANNELS,
                                    input=True,
