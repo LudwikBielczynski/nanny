@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 CHUNK = 1024
 FORMAT = paInt32
 CHANNELS = 1 # pyaudio supports only 1-channel (mono) audio
-RECORD_SECONDS = 5
+RECORD_SECONDS = 60
 WAVE_OUTPUT_FILENAME = "output.wav"
 
 class Microphone:
@@ -25,7 +25,6 @@ class Microphone:
         self.device_name_partial = "snd_rpi_simple_card"
         self.device_info = self._get_device_info()
         self._rate = int(self.device_info["defaultSampleRate"]) # Sample rate should be int
-        self._stream = None
 
     def _get_device_info(self):
         default_host_api_info = self.pyaudio.get_default_host_api_info()
@@ -44,8 +43,7 @@ class Microphone:
         self.logger.info(f"Device selected: {device_info}")
         return device_info
 
-    def stream(self):
-        print(FORMAT, CHANNELS, self._rate, self.device_info["index"], CHUNK)
+    def _stream(self):
         stream = self.pyaudio.open(format=FORMAT,
                                    channels=CHANNELS,
                                    input=True,
@@ -57,20 +55,27 @@ class Microphone:
         self.logger.info("Started stream")
         return stream
 
-    def save_locally(self):
-        stream = self.stream()
-
-        frames = []
-        for _ in range(0, int(self._rate / CHUNK * RECORD_SECONDS)):
-            data = stream.read(CHUNK)
-            frames.append(data)
-
+    def _stop_stream(self, stream):
         stream.stop_stream()
         stream.close()
         self.pyaudio.terminate()
-        self.logger.info("Stopped stream")
 
+    def _record(self):
+        stream = self._stream()
+        frames = []
 
+        if stream:
+            self.logger.info("Started recording")
+            for _ in range(0, int(self._rate / CHUNK * RECORD_SECONDS)):
+                data = stream.read(CHUNK)
+                frames.append(data)
+
+            self._stop_stream(stream)
+            self.logger.info("Stopped recording")
+
+        return frames
+
+    def _save_frames(self, frames):
         file_audio = wave.open(WAVE_OUTPUT_FILENAME, 'wb')
         file_audio.setnchannels(CHANNELS)
         file_audio.setsampwidth(self.pyaudio.get_sample_size(FORMAT))
@@ -78,3 +83,7 @@ class Microphone:
         file_audio.writeframes(b''.join(frames))
         file_audio.close()
         self.logger.info(f"Written file {WAVE_OUTPUT_FILENAME}")
+
+    def save_locally(self):
+        frames = self._record()
+        self._save_frames(frames)
