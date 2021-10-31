@@ -4,7 +4,7 @@ Description=Audio service
 [Service]
 User=pi
 Group=pi
-ExecStart=/home/pi/.pyenv/versions/3.7.11/envs/nanny/bin/python save_audio.py
+ExecStart=/home/pi/.pyenv/versions/3.7.11/envs/nanny/bin/python /home/pi/nanny/services/save_audio.py
 
 [Install]
 WantedBy=multi-user.target

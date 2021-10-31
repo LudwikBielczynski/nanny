@@ -95,7 +95,7 @@ class Microphone:
 
         return frames
 
-    def _save_frames(self, frames):
+    def _save_audio(self, frames):
         now = datetime.now().strftime(self._output_format)
         file_name = f"{now}.{WAVE_OUTPUT_FORMAT}"
         with wave.open(str(OUTPUT_DIR / file_name), 'wb') as file_audio:
@@ -107,7 +107,7 @@ class Microphone:
 
         self.logger.info(f"Written file {file_name}")
 
-    def _delete_older(self):
+    def _delete_old_audio(self):
         now = datetime.now()
         for path in OUTPUT_DIR.iterdir():
             time_recording = datetime.strptime(path.name.split(".")[0], self._output_format)
@@ -124,5 +124,5 @@ class Microphone:
         if time_record_seconds is None:
             time_record_seconds = TIME_RECORD_SECONDS
         frames = self._record(time_record_seconds)
-        self._save_frames(frames)
-        self._delete_older()
+        self._save_audio(frames)
+        self._delete_old_audio()
