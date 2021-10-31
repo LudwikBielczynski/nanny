@@ -1,0 +1,1 @@
+gdb -ex r --args /home/pi/.pyenv/versions/3.7.11/envs/nanny/bin/python  save_audio.py
