@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 CHUNK = 1024
 FORMAT = paInt32
 CHANNELS = 1 # pyaudio supports only 1-channel (mono) audio
-OUTPUT_DIR = Path("~/audio")
+OUTPUT_DIR = Path.home() / "audio"
 TIME_RECORD_SECONDS = 60 # Default setting
 KEEP_RECORDS_SECONDS = 600 # 10 last minutes
 WAVE_OUTPUT_FORMAT = "wav"
