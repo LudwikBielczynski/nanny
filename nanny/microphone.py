@@ -85,7 +85,7 @@ class Microphone:
 
     def _save_frames(self, frames):
         file_name = f"{datetime.now()}.{WAVE_OUTPUT_FORMAT}"
-        file_audio = wave.open(file_name, 'wb')
+        file_audio = wave.open(OUTPUT_DIR / file_name, 'wb')
         file_audio.setnchannels(CHANNELS)
         file_audio.setsampwidth(self.pyaudio.get_sample_size(FORMAT))
         file_audio.setframerate(self._rate)
@@ -102,6 +102,6 @@ class Microphone:
     def save_locally(self, time_record_seconds = None):
         if time_record_seconds is None:
             time_record_seconds = TIME_RECORD_SECONDS
-        frames = self._record()
+        frames = self._record(time_record_seconds)
         self._save_frames(frames)
         self._delete_older()
