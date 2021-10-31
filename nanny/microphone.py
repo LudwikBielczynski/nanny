@@ -92,7 +92,8 @@ class Microphone:
             file_audio.setsampwidth(self.pyaudio.get_sample_size(FORMAT))
             file_audio.setframerate(self._rate)
             file_audio.writeframes(b''.join(frames))
-            # file_audio.close()
+            file_audio.close()
+
         self.logger.info(f"Written file {file_name}")
 
     def _delete_older(self):
@@ -102,9 +103,10 @@ class Microphone:
             time_recording = datetime.strptime(path.name.split(".")[0], self._output_format)
             seconds_from_now = (now - time_recording).seconds
             self.logger.info(seconds_from_now)
+
             if seconds_from_now > KEEP_RECORDS_SECONDS:
                 self.logger.info(f"Deleted file {path.name}")
-                path.unlink()
+                path.unlink(missing_ok=True)
 
     def save_locally(self, time_record_seconds = None):
         if time_record_seconds is None:
