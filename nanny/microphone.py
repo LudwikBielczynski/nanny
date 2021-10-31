@@ -19,7 +19,7 @@ class Microphone:
         self.pyaudio = PyAudio()
         self.device_name_partial = "snd_rpi_simple_card"
         self.device_info = self._get_device_info()
-        self._rate = self.device_info["defaultSampleRate"]
+        self._rate = int(self.device_info["defaultSampleRate"]) # Sample rate should be int
         self._stream = None
 
     def _get_device_info(self):
