@@ -88,6 +88,7 @@ pip install -r requirements.txt
 
 sudo cp ~/nanny/services/save_audio.service /etc/systemd/system/save_audio.service
 sudo systemctl enable /etc/systemd/system/save_audio.service
+sudo systemctl daemon-reload
 sudo systemctl restart save_audio.service
 
 sudo apt-get install -y python-smbus
