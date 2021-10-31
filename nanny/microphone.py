@@ -85,7 +85,7 @@ class Microphone:
 
     def _save_frames(self, frames):
         file_name = f"{datetime.now()}.{WAVE_OUTPUT_FORMAT}"
-        file_audio = wave.open(OUTPUT_DIR / file_name, 'wb')
+        file_audio = wave.open(str(OUTPUT_DIR / file_name), 'wb')
         file_audio.setnchannels(CHANNELS)
         file_audio.setsampwidth(self.pyaudio.get_sample_size(FORMAT))
         file_audio.setframerate(self._rate)
