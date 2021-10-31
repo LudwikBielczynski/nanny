@@ -29,8 +29,9 @@ class Microphone:
         self.pyaudio = PyAudio()
         self.device_name_partial = "snd_rpi_simple_card"
         self.device_info = self._get_device_info()
-        self._rate = int(self.device_info["defaultSampleRate"]) # Sample rate should be int
 
+        self._rate = int(self.device_info["defaultSampleRate"]) # Sample rate should be int
+        self._output_format = "%Y-%m-%d %H:%M:%s"
         if not OUTPUT_DIR.is_dir():
             OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -84,20 +85,21 @@ class Microphone:
         return frames
 
     def _save_frames(self, frames):
-        file_name = f"{datetime.now()}.{WAVE_OUTPUT_FORMAT}"
-        file_audio = wave.open(str(OUTPUT_DIR / file_name), 'wb')
-        file_audio.setnchannels(CHANNELS)
-        file_audio.setsampwidth(self.pyaudio.get_sample_size(FORMAT))
-        file_audio.setframerate(self._rate)
-        file_audio.writeframes(b''.join(frames))
-        file_audio.close()
+        now = datetime.now().strftime(self._output_format)
+        file_name = f"{now}.{WAVE_OUTPUT_FORMAT}"
+        with wave.open(str(OUTPUT_DIR / file_name), 'wb') as file_audio:
+            file_audio.setnchannels(CHANNELS)
+            file_audio.setsampwidth(self.pyaudio.get_sample_size(FORMAT))
+            file_audio.setframerate(self._rate)
+            file_audio.writeframes(b''.join(frames))
+            # file_audio.close()
         self.logger.info(f"Written file {file_name}")
 
     def _delete_older(self):
         now = datetime.now()
         for path in OUTPUT_DIR.iterdir():
             self.logger.info(path)
-            self.logger.info(datetime.strptime(path.name.split(".")[0], "%Y-%m-%d"))
+            self.logger.info(datetime.strptime(path.name.split(".")[0], self._output_format))
 
     def save_locally(self, time_record_seconds = None):
         if time_record_seconds is None:
