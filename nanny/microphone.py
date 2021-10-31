@@ -74,8 +74,8 @@ class Microphone:
         self._stream = None
 
     def _record(self, time_record_seconds, reuse=True):
-        if self._stream is None:
-            self._stream = self._create_stream()
+        # if self._stream is None:
+        self._stream = self._create_stream()
         frames = []
 
         self.logger.info("Started recording")
