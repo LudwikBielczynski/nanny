@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Optional
 
-from pyaudio import PyAudio, get_format_from_width, paInt16, paFloat32
+from pyaudio import PyAudio, get_format_from_width, paInt32, paFloat32
 import wave
 
 from nanny.logger import LoggerSimple
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from nanny.logger import Logger
 
 CHUNK = 1024
-FORMAT = paInt16
+FORMAT = paInt32
 CHANNELS = 1 # pyaudio supports only 1-channel (mono) audio
 RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output.wav"
@@ -77,4 +77,4 @@ class Microphone:
         file_audio.setframerate(self._rate)
         file_audio.writeframes(b''.join(frames))
         file_audio.close()
-        self.logger.info(f"Written file {file_audio}")
+        self.logger.info(f"Written file {WAVE_OUTPUT_FILENAME}")
