@@ -61,28 +61,37 @@ class Microphone:
                                    rate=self._rate,
                                    input_device_index=self.device_info["index"],
                                    frames_per_buffer=CHUNK,
-                                #    stream_callback=callback
+                                   start=False,
                                   )
         self.logger.info("Started stream")
         return stream
 
+    def _start(self, stream):
+        stream.start_stream()
+        self.logger.info("Started stream")
+
+    def _stop(self, stream):
+        stream.stop_stream()
+        stream.close()
+        self.logger.info("Stopped stream")
+
     def terminate(self):
-        self.logger.info("Terminating microphone")
-        self._stream.stop_stream()
-        self._stream.close()
         self.pyaudio.terminate()
-        self._stream = None
+        self.logger.info("Terminating microphone")
 
     def _record(self, time_record_seconds, reuse=True):
-        # if self._stream is None:
-        self._stream = self._create_stream()
-        frames = []
+        self.logger.info("Starting recording")
 
-        self.logger.info("Started recording")
+        if self._stream is None:
+            self._stream = self._create_stream()
+        self._start(self._stream)
+
+        frames = []
         for _ in range(0, int(self._rate / CHUNK * time_record_seconds)):
             data = self._stream.read(CHUNK)
             frames.append(data)
 
+        self._stop(self._stream)
         self.logger.info("Stopped recording")
 
         return frames
@@ -102,10 +111,8 @@ class Microphone:
     def _delete_older(self):
         now = datetime.now()
         for path in OUTPUT_DIR.iterdir():
-            self.logger.info(path)
             time_recording = datetime.strptime(path.name.split(".")[0], self._output_format)
             seconds_from_now = (now - time_recording).seconds
-            self.logger.info(seconds_from_now)
 
             if seconds_from_now > KEEP_RECORDS_SECONDS:
                 self.logger.info(f"Deleted file {path.name}")
