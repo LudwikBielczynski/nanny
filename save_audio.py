@@ -1,6 +1,6 @@
 # import sys
 
-from nanny.logger import LoggerSimple
+from nanny.logger import Logger
 from nanny.microphone import Microphone
 
 def trace(frame, event, arg):
@@ -9,8 +9,8 @@ def trace(frame, event, arg):
 
 if __name__ == "__main__":
     # sys.settrace(trace)
-    logger = LoggerSimple()
-    microphone = Microphone()
+    logger = Logger()
+    microphone = Microphone(logger)
 
     while True:
         try:
