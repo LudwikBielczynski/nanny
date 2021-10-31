@@ -63,7 +63,7 @@ class Microphone:
                                    frames_per_buffer=CHUNK,
                                    start=False,
                                   )
-        self.logger.info("Started stream")
+        self.logger.info("Created stream")
         return stream
 
     def _start(self, stream):
@@ -72,7 +72,6 @@ class Microphone:
 
     def _stop(self, stream):
         stream.stop_stream()
-        stream.close()
         self.logger.info("Stopped stream")
 
     def terminate(self):
