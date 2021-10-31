@@ -11,7 +11,7 @@ from nanny.logger import LoggerSimple
 if TYPE_CHECKING:
     from nanny.logger import Logger
 
-CHUNK = 1024
+CHUNK = 4096
 FORMAT = paInt32
 CHANNELS = 1 # pyaudio supports only 1-channel (mono) audio
 OUTPUT_DIR = Path.home() / "audio"
@@ -31,7 +31,7 @@ class Microphone:
         self.device_info = self._get_device_info()
 
         self._rate = int(self.device_info["defaultSampleRate"]) # Sample rate should be int
-        self._output_format = "%Y-%m-%d %H:%M:%s"
+        self._output_format = "%Y-%m-%d %H:%M:%S"
         if not OUTPUT_DIR.is_dir():
             OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
