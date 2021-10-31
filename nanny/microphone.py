@@ -1,7 +1,9 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from pyaudio import PyAudio, get_format_from_width, paInt16, paFloat32
 import wave
+
+from nanny.logger import LoggerSimple
 
 if TYPE_CHECKING:
     from nanny.logger import Logger
@@ -13,8 +15,11 @@ RECORD_SECONDS = 5
 WAVE_OUTPUT_FILENAME = "output.wav"
 
 class Microphone:
-    def __init__(self, logger: 'Logger'):
-        self.logger = logger
+    def __init__(self, logger: Optional['Logger'] = None):
+        if logger is None:
+            self.logger = LoggerSimple()
+        else:
+            self.logger = logger
 
         self.pyaudio = PyAudio()
         self.device_name_partial = "snd_rpi_simple_card"
@@ -36,6 +41,7 @@ class Microphone:
                 device_info = self.pyaudio.get_device_info_by_host_api_device_index(
                     host_api_idx, device_idx)
 
+        self.logger.info(f"Device selected: {device_info}")
         return device_info
 
     def stream(self):
