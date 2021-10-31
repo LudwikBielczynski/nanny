@@ -2,19 +2,10 @@
 
 import sys
 
-from pyaudio import PyAudio, get_format_from_width
+from nanny.microphone import Microphone
 import wave
 
-CHUNK = 1024
-
-if len(sys.argv) < 2:
-    print("Plays a wave file.\n\nUsage: %s filename.wav" % sys.argv[0])
-    sys.exit(-1)
-
-wave_file = wave.open(sys.argv[1], 'rb')
-
-# Instantiate PyAudio
-pyaudio = PyAudio()
+microphone = Microphone()
 
 # Open stream
 stream = pyaudio.open(format=get_format_from_width(wave_file.getsampwidth()),
