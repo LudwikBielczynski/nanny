@@ -99,7 +99,12 @@ class Microphone:
         now = datetime.now()
         for path in OUTPUT_DIR.iterdir():
             self.logger.info(path)
-            self.logger.info(datetime.strptime(path.name.split(".")[0], self._output_format))
+            time_recording = datetime.strptime(path.name.split(".")[0], self._output_format)
+            seconds_from_now = (now - time_recording).seconds
+            self.logger.info(seconds_from_now)
+            if seconds_from_now > KEEP_RECORDS_SECONDS:
+                self.logger.info(f"Deleted file {path.name}")
+                path.unlink()
 
     def save_locally(self, time_record_seconds = None):
         if time_record_seconds is None:
