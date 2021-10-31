@@ -106,7 +106,10 @@ class Microphone:
 
             if seconds_from_now > KEEP_RECORDS_SECONDS:
                 self.logger.info(f"Deleted file {path.name}")
-                path.unlink(missing_ok=True)
+                try:
+                    path.unlink()
+                except:
+                    self.logger.warn(f"Path was missing: {path}")
 
     def save_locally(self, time_record_seconds = None):
         if time_record_seconds is None:
