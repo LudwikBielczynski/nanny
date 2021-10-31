@@ -29,6 +29,8 @@ class Microphone:
         self.pyaudio = PyAudio()
         self.device_name_partial = "snd_rpi_simple_card"
         self.device_info = self._get_device_info()
+        self.stream = None
+        self.file_audio = None
 
         self._rate = int(self.device_info["defaultSampleRate"]) # Sample rate should be int
         self._output_format = "%Y-%m-%d %H:%M:%S"
@@ -52,7 +54,7 @@ class Microphone:
         self.logger.info(f"Device selected: {device_info}")
         return device_info
 
-    def _stream(self):
+    def _create_stream(self):
         stream = self.pyaudio.open(format=FORMAT,
                                    channels=CHANNELS,
                                    input=True,
@@ -64,23 +66,24 @@ class Microphone:
         self.logger.info("Started stream")
         return stream
 
-    def _stop_stream(self, stream):
-        stream.stop_stream()
-        stream.close()
+    def terminate(self):
+        self.logger.info("Terminating microphone")
+        self._stream.stop_stream()
+        self._stream.close()
         self.pyaudio.terminate()
+        self._stream = None
 
-    def _record(self, time_record_seconds):
-        stream = self._stream()
+    def _record(self, time_record_seconds, reuse=True):
+        if self._stream is None:
+            self.stream = self._create_stream()
         frames = []
 
-        if stream:
-            self.logger.info("Started recording")
-            for _ in range(0, int(self._rate / CHUNK * time_record_seconds)):
-                data = stream.read(CHUNK)
-                frames.append(data)
+        self.logger.info("Started recording")
+        for _ in range(0, int(self._rate / CHUNK * time_record_seconds)):
+            data = self.stream.read(CHUNK)
+            frames.append(data)
 
-            self._stop_stream(stream)
-            self.logger.info("Stopped recording")
+        self.logger.info("Stopped recording")
 
         return frames
 

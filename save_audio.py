@@ -19,3 +19,5 @@ if __name__ == "__main__":
         except Exception as e:
             logger.info('Exception was raised')
             logger.error(e)
+
+    microphone.terminate()
