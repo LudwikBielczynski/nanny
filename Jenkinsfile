@@ -12,6 +12,8 @@ pipeline {
                 sh 'pip install --no-cache-dir -r requirements/dev.txt --user'
 
                 // Run tests
+                sh 'echo $PATH'
+                sh 'ls -la /.local/bin'
                 sh 'pytest --junit-xml test-reports/results.xml'
             }
             post {
