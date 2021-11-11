@@ -62,6 +62,7 @@ sudo nano /etc/hostname
 # Change raspberrypi to nanny
 sudo reboot
 
+#-----------------------------------------------------------------------
 # Install pyenv
 sudo apt-get update && sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev openssl bzip2
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
@@ -86,6 +87,8 @@ pyenv activate nanny
 # Install dependencies
 pip install -r requirements.txt
 
+#-----------------------------------------------------------------------
+# Enable and start service to save audio in ~/audio/
 sudo cp ~/nanny/services/save_audio.service /etc/systemd/system/save_audio.service
 sudo systemctl enable /etc/systemd/system/save_audio.service
 sudo systemctl daemon-reload
