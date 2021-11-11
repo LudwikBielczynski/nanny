@@ -13,6 +13,7 @@ pipeline {
                 sh 'cat /etc/os-release'
                 sh 'ls -la'
                 sh 'ls -la /'
+                sh 'echo $USER'
 
                 // Install all python dependencies
                 sh 'pip install --no-cache-dir -r requirements.txt --user'
