@@ -1,6 +1,6 @@
 import sys
 
-from nanny.test.fixtures import camera, logger, PiCameraMock
+from nanny.test.fixtures import camera, logger
 
 def test_singleton(logger):
     '''Mock up the module import as it cannot be imported on anything else than raspberry pi.'''
