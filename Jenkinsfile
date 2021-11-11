@@ -10,7 +10,7 @@ pipeline {
                 // Install all python dependencies
                 sh 'pip install --no-cache-dir -r requirements.txt --user'
                 sh 'pip install --no-cache-dir -r requirements/dev.txt --user'
-
+                sh 'pip install -e $HOME/workspace/nanny --user'
                 // Run tests
                 // sh ''
                 // sh 'echo $PATH'
