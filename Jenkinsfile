@@ -10,7 +10,7 @@ pipeline {
             }
             steps {
                 // Install system level dependencies for pyaudio
-                sh 'apt-get update && apt-get install python-all-dev portaudio19-dev'
+                sh 'sudo apt-get update && sudo apt-get install python-all-dev portaudio19-dev'
 
                 // Install all python dependencies
                 sh 'pip install -r requirements.txt'
