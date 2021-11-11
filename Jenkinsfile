@@ -23,6 +23,9 @@ pipeline {
             }
         }
         stage('Deliver') {
+            steps {
+                sh 'echo not implemented'
+            }
         }
     }
 }
