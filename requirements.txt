@@ -1,5 +1,3 @@
-picamera
-RPI.GPIO
 flask
 pyaudio
 wave
