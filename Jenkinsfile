@@ -16,8 +16,8 @@ pipeline {
                 // sh 'sudo apt-get update && sudo apt-get install python-all-dev portaudio19-dev'
 
                 // Install all python dependencies
-                sh 'pip install -r requirements.txt'
-                sh 'pip install -r requirements/dev.txt'
+                sh 'pip install --no-cache-dir -r requirements.txt --user'
+                sh 'pip install --no-cache-dir -r requirements/dev.txt --user'
 
                 sh 'echo trial'
                 sh 'ls -la'
