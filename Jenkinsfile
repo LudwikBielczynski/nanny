@@ -3,16 +3,17 @@ pipeline {
     stages {
         stage('Test') {
             agent {
-                docker {
-                    image 'python:3.7'
-                    // image 'qnib/pytest'
-                }
+                dockerfile true
+                // docker {
+                //     // image 'python:3.7'
+
+                // }
             }
             steps {
                 sh 'cat /etc/os-release'
-                sh 'apt-get install sudo'
+                // sh 'apt-get install sudo'
                 // Install system level dependencies for pyaudio
-                sh 'sudo apt-get update && sudo apt-get install python-all-dev portaudio19-dev'
+                // sh 'sudo apt-get update && sudo apt-get install python-all-dev portaudio19-dev'
 
                 // Install all python dependencies
                 sh 'pip install -r requirements.txt'
