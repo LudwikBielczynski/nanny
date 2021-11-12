@@ -24,9 +24,7 @@ pipeline {
         }
         stage('Deliver') {
             agent {
-                docker {
-                    image: 'ubuntu:20.04'
-                }
+                docker { image 'ubuntu:20.04' }
 
             }
             steps {
