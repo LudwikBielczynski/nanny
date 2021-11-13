@@ -3,8 +3,10 @@ pipeline {
     stages {
         stage('Test') {
             agent {
-                dockerfile true
-
+                dockerfile {
+                        filename 'pytest.dockerfile'
+                        dir 'dockerfiles'
+                    }
             }
             steps {
                 // Install all python dependencies
@@ -17,19 +19,16 @@ pipeline {
                 sh 'PATH="$PATH:/.local/bin" && pytest --junit-xml test-reports/results.xml'
             }
             post {
-                always {
-                    junit 'test-reports/results.xml'
-                }
+                always { junit 'test-reports/results.xml' }
             }
-        }
+            }
         stage('Deliver') {
             agent {
                 docker { image 'ubuntu:20.04' }
-
             }
             steps {
                 sh 'echo not implemented'
             }
         }
+        }
     }
-}

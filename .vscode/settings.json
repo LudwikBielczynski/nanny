@@ -1,0 +1,22 @@
+{
+    "python.pythonPath": "/home/ludwik/.pyenv/versions/data_science/bin/python",
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.mypy_cache/**": true,
+        "**/.pytest_cache/**": true,
+        "**/__pycache__/**": true,
+        "**/.git": true
+    },
+    "files.exclude": {
+        "**/.git/objects/**": true,
+        "**/*.egg-info/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.mypy_cache/**": true,
+        "**/.pytest_cache/**": true,
+        "**/__pycache__/**": true,
+        "**/.git": true
+    }
+}
