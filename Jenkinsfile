@@ -30,11 +30,8 @@ pipeline {
                 }
             }
             steps {
-                sh 'ls -la /'
-                sh 'ls -la /tmp'
-                sh 'ls -la /home'
                 sh 'touch trial.txt'
-                sh 'scp trial.txt pi@nanny.local:/home/pi/trial.txt'
+                sh 'scp trial.txt pi@192.168.0.234:/home/pi/trial.txt'
                 sh 'echo not implemented'
             }
         }
