@@ -15,7 +15,6 @@ pipeline {
                 sh 'pip install -e "/home/workspace/nanny" --user'
 
                 // Run tests
-
                 sh 'PATH="$PATH:/.local/bin" && pytest --junit-xml test-reports/results.xml'
             }
             post {
@@ -27,9 +26,12 @@ pipeline {
                 dockerfile {
                         filename 'agent_deliver.dockerfile'
                         dir 'dockerfiles'
+                        args '-v /home/.ssh:/tmp/.ssh:ro'
                 }
             }
             steps {
+                sh 'touch trial.txt'
+                sh 'scp trial.txt pi@nanny.local:/home/pi/trial.txt'
                 sh 'echo not implemented'
             }
         }

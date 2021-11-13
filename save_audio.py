@@ -1,11 +1,5 @@
-# import sys
-
 from nanny.logger import Logger
 from nanny.microphone import Microphone
-
-def trace(frame, event, arg):
-    print("%s, %s:%d" % (event, frame.f_code.co_filename, frame.f_lineno))
-    return trace
 
 if __name__ == "__main__":
     # sys.settrace(trace)
@@ -19,5 +13,3 @@ if __name__ == "__main__":
         except Exception as e:
             logger.info('Exception was raised')
             logger.error(e)
-
-    microphone.terminate()

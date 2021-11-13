@@ -13,11 +13,12 @@ if TYPE_CHECKING:
 
 CHUNK = 4096
 FORMAT = paInt32
-CHANNELS = 1 # pyaudio supports only 1-channel (mono) audio
+CHANNELS = 1  # pyaudio supports only 1-channel (mono) audio
 OUTPUT_DIR = Path.home() / "audio"
-TIME_RECORD_SECONDS = 60 # Default setting
-KEEP_RECORDS_SECONDS = 600 # 10 last minutes
+TIME_RECORD_SECONDS = 60  # Default setting
+KEEP_RECORDS_SECONDS = 600  # Last 10 minutes
 WAVE_OUTPUT_FORMAT = "wav"
+
 
 class Microphone:
     def __init__(self, logger: Optional['Logger'] = None):
@@ -32,7 +33,8 @@ class Microphone:
         self._stream = None
         self.file_audio = None
 
-        self._rate = int(self.device_info["defaultSampleRate"]) # Sample rate should be int
+        # Sample rate should be int
+        self._rate = int(self.device_info["defaultSampleRate"])
         self._output_format = "%Y-%m-%d %H:%M:%S"
         if not OUTPUT_DIR.is_dir():
             OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -40,7 +42,6 @@ class Microphone:
     def _get_device_info(self):
         default_host_api_info = self.pyaudio.get_default_host_api_info()
         host_api_idx = default_host_api_info['index']
-        # print(default_host_api_info)
 
         device_count = default_host_api_info.get('deviceCount')
         device_info = None
@@ -62,7 +63,7 @@ class Microphone:
                                    input_device_index=self.device_info["index"],
                                    frames_per_buffer=CHUNK,
                                    start=False,
-                                  )
+                                   )
         self.logger.info("Created stream")
         return stream
 
@@ -110,7 +111,8 @@ class Microphone:
     def _delete_old_audio(self):
         now = datetime.now()
         for path in OUTPUT_DIR.iterdir():
-            time_recording = datetime.strptime(path.name.split(".")[0], self._output_format)
+            time_recording = datetime.strptime(
+                path.name.split(".")[0], self._output_format)
             seconds_from_now = (now - time_recording).seconds
 
             if seconds_from_now > KEEP_RECORDS_SECONDS:
@@ -120,7 +122,7 @@ class Microphone:
                 except:
                     self.logger.warn(f"Path was missing: {path}")
 
-    def save_locally(self, time_record_seconds = None):
+    def save_locally(self, time_record_seconds=None):
         if time_record_seconds is None:
             time_record_seconds = TIME_RECORD_SECONDS
         frames = self._record(time_record_seconds)

@@ -4,6 +4,7 @@ from typing import Optional
 
 from nanny.singleton import SingletonMeta
 
+
 class Logger(metaclass=SingletonMeta):
 
     def __init__(self, logger_name: Optional[str] = None) -> None:
@@ -12,10 +13,11 @@ class Logger(metaclass=SingletonMeta):
 
         self.logger = logging.getLogger(logger_name)
         self.logger.setLevel(logging.DEBUG)
-        logs_format = ('%(asctime)s.%(msecs).0f - %(levelname)s - PID:%(process)d ' \
+        logs_format = ('%(asctime)s.%(msecs).0f - %(levelname)s - PID:%(process)d '
                        '{%(name)s.%(funcName)s:%(lineno)d} %(message)s'
-                      )
-        formatter = logging.Formatter(fmt=logs_format, datefmt="%Y-%m-%d %H:%M:%S")
+                       )
+        formatter = logging.Formatter(
+            fmt=logs_format, datefmt="%Y-%m-%d %H:%M:%S")
 
         stream_handler = logging.StreamHandler(sys.stdout)
         stream_handler.setLevel(logging.DEBUG)
