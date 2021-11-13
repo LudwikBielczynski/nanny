@@ -7,5 +7,6 @@ RUN echo '${USER}:${USER}' | chpasswd
 
 COPY ssh_permissions /bin/ssh_permissions
 RUN chmod +x /bin/ssh_permissions
-ENTRYPOINT ["/bin/ssh_permissions"]
 
+USER ${USER}
+ENTRYPOINT ["/bin/ssh_permissions"]
