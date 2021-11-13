@@ -4,9 +4,12 @@ set -e
 SSH_SOURCE_FOLDER="/tmp/.ssh"
 SSH_DESTINATION_FOLDER="/home/$USER/.ssh"
 if [ -f "$SSH_SOURCE_FOLDER" ]; then
+    echo Changing permissions of "$SSH_SOURCE_FOLDER" to "$SSH_DESTINATION_FOLDER"
     cp -R /tmp/.ssh "$SSH_DESTINATION_FOLDER"
     chmod 700 "$SSH_DESTINATION_FOLDER"
     chmod 644 "$SSH_DESTINATION_FOLDER/id_rsa.pub"
     chmod 600 "$SSH_DESTINATION_FOLDER/.ssh/id_rsa"
+else
+    echo "$SSH_SOURCE_FOLDER" does not exist
 fi
 exec "$@"
