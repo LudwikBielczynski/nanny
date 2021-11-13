@@ -1,11 +1,12 @@
 #!/bin/bash
 set -e
 
-SSH_FOLDER="/tmp/.ssh"
-if [ -f "$SSH_FOLDER" ]; then
-    cp -R /tmp/.ssh /root/.ssh
-    chmod 700 /root/.ssh
-    chmod 644 /root/.ssh/id_rsa.pub
-    chmod 600 /root/.ssh/id_rsa
+SSH_SOURCE_FOLDER="/tmp/.ssh"
+SSH_DESTINATION_FOLDER="/home/$USER/.ssh"
+if [ -f "$SSH_SOURCE_FOLDER" ]; then
+    cp -R /tmp/.ssh "$SSH_DESTINATION_FOLDER"
+    chmod 700 "$SSH_DESTINATION_FOLDER"
+    chmod 644 "$SSH_DESTINATION_FOLDER/id_rsa.pub"
+    chmod 600 "$SSH_DESTINATION_FOLDER/.ssh/id_rsa"
 fi
 exec "$@"
