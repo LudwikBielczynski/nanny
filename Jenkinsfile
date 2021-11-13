@@ -26,7 +26,7 @@ pipeline {
                 dockerfile {
                         filename 'agent_deliver.dockerfile'
                         dir 'dockerfiles'
-                        args '-v /home/.ssh:/tmp/.ssh:ro'
+                        args '-v /home/.ssh:/tmp/.ssh:ro --net=host'
                 }
             }
             steps {
