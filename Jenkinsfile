@@ -4,7 +4,7 @@ pipeline {
         stage('Test') {
             agent {
                 dockerfile {
-                        filename 'pytest.dockerfile'
+                        filename 'agent_test.dockerfile'
                         dir 'dockerfiles'
                     }
             }
@@ -21,14 +21,17 @@ pipeline {
             post {
                 always { junit 'test-reports/results.xml' }
             }
-            }
+        }
         stage('Deliver') {
             agent {
-                docker { image 'ubuntu:20.04' }
+                dockerfile {
+                        filename 'agent_deliver.dockerfile'
+                        dir 'dockerfiles'
+                }
             }
             steps {
                 sh 'echo not implemented'
             }
         }
-        }
     }
+}
