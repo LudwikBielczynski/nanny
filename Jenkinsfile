@@ -33,7 +33,7 @@ pipeline {
                 sh 'touch trial.txt'
                 sh 'scp -v -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no trial.txt pi@192.168.0.234:/home/pi/trial.txt'
                 sh '''ssh -v -i /root/.ssh/id_rsa pi@192.168.0.234
-                      la -la
+                      ls -la
                 '''
                 sh 'ls -la'
                 // sh 'sudo systemctl restart save_audio.service'
