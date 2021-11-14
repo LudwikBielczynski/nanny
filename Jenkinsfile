@@ -36,7 +36,7 @@ pipeline {
                 sh 'ls -la /home'
                 sh 'ls -la /tmp/.ssh'
                 // sh 'ls -la /home/deploy'
-                sh 'scp trial.txt pi@192.168.0.234:/home/pi/trial.txt'
+                sh 'scp -v trial.txt pi@192.168.0.234:/home/pi/trial.txt'
                 sh 'echo not implemented'
             }
         }
