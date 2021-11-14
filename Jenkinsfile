@@ -30,7 +30,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'scp -v -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no services/save_audio.service pi@192.168.0.234:/etc/systemd/system/save_audio.service'
+                sh 'scp -v -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no services/save_audio.service pi@192.168.0.234:/home/pi/services/save_audio.service'
                 sh 'ssh -v -i /root/.ssh/id_rsa pi@192.168.0.234 /bin/bash < jenkins/scripts/restart_audio_service'
             }
         }
