@@ -1,3 +1,5 @@
 #!/bin/bash
 ls -la
+touch restart_audio_service.txt
+sudo systemctl restart save_audio.service
 echo script executed
