@@ -9,4 +9,4 @@ COPY ssh_permissions /bin/ssh_permissions
 RUN chmod +x /bin/ssh_permissions
 
 # USER ${USER_CONTAINER}
-ENTRYPOINT ["./bin/ssh_permissions"]
+ENTRYPOINT "/bin/ssh_permissions"
