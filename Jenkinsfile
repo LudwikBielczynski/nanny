@@ -21,7 +21,7 @@ pipeline {
         //         always { junit 'test-reports/results.xml' }
         //     }
         // }
-        stage('Deliver') {
+        stage('Deploy') {
             agent {
                 dockerfile {
                         filename 'agent_deliver.dockerfile'
@@ -31,6 +31,7 @@ pipeline {
             }
             steps {
                 sh 'scp -v -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no services/save_audio.service pi@192.168.0.234:/home/pi/services/save_audio.service'
+                sh 'ssh -v -i /root/.ssh/id_rsa pi@192.168.0.234 /bin/bash < jenkins/scripts/update_local_git'
                 sh 'ssh -v -i /root/.ssh/id_rsa pi@192.168.0.234 /bin/bash < jenkins/scripts/restart_audio_service'
             }
         }

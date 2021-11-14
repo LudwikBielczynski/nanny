@@ -1,0 +1,4 @@
+#!/bin/bash
+cd "$HOME/nanny" || exit
+git pull
+echo "Updated local repository"
