@@ -35,6 +35,7 @@ pipeline {
                 sh '''#!/bin/bash
                       ssh -v -i /root/.ssh/id_rsa pi@192.168.0.234 /bin/bash << EOF
                       ls -la
+                      echo trial
                       EOF
                 '''
                 sh 'ls -la'
