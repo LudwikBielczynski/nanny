@@ -30,16 +30,8 @@ pipeline {
                 }
             }
             steps {
-                sh 'touch trial.txt'
-                sh 'scp -v -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no trial.txt pi@192.168.0.234:/home/pi/trial.txt'
-                sh 'ls -la'
-                sh '''#!/bin/bash
-                      ssh -v -i /root/.ssh/id_rsa pi@192.168.0.234 /bin/bash < jenkins/scripts/restart_audio_service
-                '''
-                sh 'ls -la'
-                // sh 'sudo systemctl restart save_audio.service'
-                sh 'exit'
-                sh 'echo not implemented'
+                sh 'scp -v -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no services/save_audio.service pi@192.168.0.234:/etc/systemd/system/save_audio.service'
+                sh 'ssh -v -i /root/.ssh/id_rsa pi@192.168.0.234 /bin/bash < jenkins/scripts/restart_audio_service'
             }
         }
     }

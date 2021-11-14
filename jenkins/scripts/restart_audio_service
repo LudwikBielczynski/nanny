@@ -1,5 +1,4 @@
 #!/bin/bash
-ls -la
-touch restart_audio_service.txt
+sudo systemctl daemon-reload
 sudo systemctl restart save_audio.service
-echo script executed
+echo Updated and restarted save_audio.service
