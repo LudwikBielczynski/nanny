@@ -38,7 +38,7 @@ pipeline {
                 sh 'ls -la /etc/ssh'
                 sh 'ls -la /home/.ssh'
                 sh 'ls -la /tmp/.ssh'
-                sh './usr/bin/ssh_permissions'
+                sh '/usr/bin/ssh_permissions'
                 // sh 'sleep 600'
                 // sh 'ls -la /root/.ssh'
                 sh 'scp -v trial.txt pi@192.168.0.234:/home/pi/trial.txt'
