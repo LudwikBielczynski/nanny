@@ -11,4 +11,4 @@ RUN chmod +x /bin/ssh_permissions
 # RUN echo ${USER_CONTAINER}:${USER_CONTAINER} | chpasswd
 # USER ${USER_CONTAINER}
 
-ENTRYPOINT ["/bin/ssh_permissions"]
+# ENTRYPOINT ["/bin/ssh_permissions"]

@@ -30,6 +30,7 @@ pipeline {
                 }
             }
             steps {
+                sh "./bin/ssh_permissions"
                 sh 'touch trial.txt'
                 sh 'ls -la /'
                 sh 'ls -la /etc/ssh'
