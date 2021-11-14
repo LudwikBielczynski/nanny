@@ -32,7 +32,7 @@ pipeline {
             steps {
                 sh 'touch trial.txt'
                 sh 'ls -la /'
-                sh 'ls -la /root'
+                // sh 'ls -la /root'
                 sh 'ls -la /home'
                 sh 'ls -la /tmp/.ssh'
                 // sh 'ls -la /home/deploy'
