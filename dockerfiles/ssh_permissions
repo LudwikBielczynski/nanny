@@ -4,6 +4,7 @@ set -e
 SSH_SOURCE_FOLDER="/home/.ssh"
 # SSH_DESTINATION_FOLDER="/home/$USER/.ssh"
 SSH_DESTINATION_FOLDER="/root/.ssh"
+ls -la $SSH_SOURCE_FOLDER
 if [ -f "$SSH_SOURCE_FOLDER" ]; then
     echo Changing permissions of "$SSH_SOURCE_FOLDER" to "$SSH_DESTINATION_FOLDER"
     cp -R "$SSH_SOURCE_FOLDER" "$SSH_DESTINATION_FOLDER"
