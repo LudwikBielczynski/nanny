@@ -41,7 +41,7 @@ pipeline {
                 sh '/usr/bin/ssh_permissions'
                 // sh 'sleep 600'
                 // sh 'ls -la /root/.ssh'
-                sh 'scp -v -o StrictHostKeyChecking=no trial.txt pi@192.168.0.234:/home/pi/trial.txt'
+                sh 'scp -v -i /root/.ssh/id_rsa -o StrictHostKeyChecking=no trial.txt pi@192.168.0.234:/home/pi/trial.txt'
                 sh 'echo not implemented'
             }
         }
