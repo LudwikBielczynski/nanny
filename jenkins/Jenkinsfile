@@ -5,7 +5,7 @@ pipeline {
             agent {
                 dockerfile {
                         filename 'agent_test.dockerfile'
-                        dir 'dockerfiles'
+                        dir 'jenkins/dockerfiles'
                     }
             }
             steps {
@@ -25,7 +25,7 @@ pipeline {
             agent {
                 dockerfile {
                         filename 'agent_deliver.dockerfile'
-                        dir 'dockerfiles'
+                        dir 'jenkins/dockerfiles'
                         args '--net=host -u root'
                 }
             }
